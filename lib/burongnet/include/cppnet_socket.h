@@ -1,0 +1,42 @@
+
+
+#ifndef INCLUDE_CPPNET_SOCKET
+#define INCLUDE_CPPNET_SOCKET
+
+#include <cstdint>
+#include <string>
+
+namespace burongnet {
+
+// cppnet socket interface
+class CNSocket {
+ public:
+  CNSocket() {}
+  virtual ~CNSocket() {}
+  // get os native socket
+  virtual uint64_t GetSocket() = 0;
+  // get local listen port
+  virtual uint16_t GetListenPort() = 0;
+  // get socket IP and address
+  virtual bool GetAddress(std::string& ip, uint16_t& port) = 0;
+
+  // post sync write event.
+  virtual bool Write(const char* src, uint32_t len) = 0;
+  // close the connect
+  virtual void Close() = 0;
+
+  // add a timer. must set timer call back
+  // interval support max 1 minute
+  virtual void AddTimer(uint32_t interval, bool always = false) = 0;
+  // stop the timer
+  virtual void StopTimer() = 0;
+
+  // set cppnet socket context.
+  virtual void SetContext(void* context) = 0;
+  // get context.
+  virtual void* GetContext() = 0;
+};
+
+}  // namespace burongnet
+
+#endif
